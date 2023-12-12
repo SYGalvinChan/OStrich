@@ -1,14 +1,16 @@
 GCCPATH = ../gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin
 
-COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only
-ASMOPS = -Iinclude 
-
 BUILD_DIR = build
 SRC_DIR = src
+INCLUDE_DIR = include
+
+COPS = -Wall -nostdlib -nostartfiles -ffreestanding -I$(INCLUDE_DIR) -mgeneral-regs-only
+ASMOPS = -I$(INCLUDE_DIR) 
 
 C_FILES = $(wildcard $(SRC_DIR)/*.c)
 ASM_FILES = $(wildcard $(SRC_DIR)/*.S)
-H_FILES = $(wildcard $(SRC_DIR)/*.h)
+H_FILES = $(wildcard $(INCLUDE_DIR)/*.h)
+
 OBJ_FILES = $(C_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%_c.o)
 OBJ_FILES += $(ASM_FILES:$(SRC_DIR)/%.S=$(BUILD_DIR)/%_s.o)
 
