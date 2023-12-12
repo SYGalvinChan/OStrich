@@ -9,8 +9,8 @@ SECTIONS
 		. = ALIGN(16);
 		bss_begin = .;
 		*(.bss .bss.*)
-			*(COMMON)
-			bss_end = .;
+		*(COMMON)
+		bss_end = .;
 	}
 	_end = .;
 	/DISCARD/ : { *(.comment) *(.gnu*) *(.note*) *(.eh_frame*) }
