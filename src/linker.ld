@@ -1,17 +1,47 @@
+ENTRY(_start)
+ 
 SECTIONS
 {
-	. = 0x80000;     /* Kernel load address for AArch64 */
-	.text : { KEEP(*(.text.boot)) *(.text .text.* .gnu.linkonce.t*) }
-	.rodata : { *(.rodata .rodata.* .gnu.linkonce.r*) }
-	PROVIDE(_data = .);
-	.data : { *(.data .data.* .gnu.linkonce.d*) }
-	.bss (NOLOAD) : {
-		. = ALIGN(16);
-		bss_begin = .;
-		*(.bss .bss.*)
-		*(COMMON)
-		bss_end = .;
-	}
-	_end = .;
+    /* Starts at LOADER_ADDR. */
+    . = 0x8000;
+    /* For AArch64, use . = 0x80000; */
+    __start = .;
+    __text_start = .;
+    .text :
+    {
+        KEEP(*(.text.boot))
+        *(.text)
+    }
+    . = ALIGN(4096); /* align to page size */
+    __text_end = .;
+ 
+    __rodata_start = .;
+    .rodata :
+    {
+        *(.rodata)
+    }
+    . = ALIGN(4096); /* align to page size */
+    __rodata_end = .;
+ 
+    __data_start = .;
+    .data :
+    {
+        *(.data)
+    }
+    . = ALIGN(4096); /* align to page size */
+    __data_end = .;
+ 
+    __bss_start = .;
+    .bss :
+    {
+        bss = .;
+        *(.bss)
+    }
+    . = ALIGN(4096); /* align to page size */
+    __bss_end = .;
+    __bss_size = __bss_end - __bss_start;
+	bss_begin = __bss_start;
+	bss_end = __bss_end;
+    __end = .;
 	/DISCARD/ : { *(.comment) *(.gnu*) *(.note*) *(.eh_frame*) }
 }
