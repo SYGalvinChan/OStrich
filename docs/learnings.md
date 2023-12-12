@@ -18,3 +18,5 @@ I faced "Error: 0x80370102" which required me to boot to BIOS and enable Virtual
 ### Cross Compiler
 Since I am targeting to implement OStrich on a Raspberry Pi 4 which uses an ARM processor, I need a compiler that takes in my C/C++ code and outputs ARM instructions.
 Hence a cross compiler is nessecary for this project. I downloaded a pre-built GCC toolchain from https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads, under x86_64 Linux hosted cross compilers -> AArch64 ELF bare-metal target (aarch64-none-elf). I then extracted the file using `tar -xf <file-name>`
+### ARM Architecture
+Raspberry Pi uses the Quad core Cortex-A72 processor which implements the AArch64 ISA. 
