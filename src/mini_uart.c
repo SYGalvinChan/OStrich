@@ -1,6 +1,7 @@
 #include "mini_uart.h"
 #include "utils.h"
-#include "memory_map.h"
+#include "memory_map/aux.h"
+#include "memory_map/gpio.h"
 
 void mini_uart_init() {
 	unsigned int register_value;
