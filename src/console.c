@@ -21,6 +21,9 @@ char* console_readline() {
 	int i = 0;
 	c = mini_uart_rx();
 	while (c != '\n') {
+		if (i >= MAX_BUFFER_SIZE - 1) {
+			break;
+		}
 		buffer[i] = c;
 		i++;
 	}
