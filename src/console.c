@@ -9,9 +9,10 @@ void console_init() {
 }
 
 void console_write(char* str) {
-	char c = str[0];
-	while (c) {
-		mini_uart_tx(c);
+	char* c = str;
+	while (*c) {
+		mini_uart_tx(*c);
+		c++;		
 	}
 }
 
