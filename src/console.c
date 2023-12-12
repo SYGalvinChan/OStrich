@@ -23,8 +23,6 @@ char* console_readline() {
 		buffer[i] = c;
 		i++;
 	}
-	buffer[i] = 0x00;
+	buffer[i] = '\0';
 	return buffer;
 }
-
-

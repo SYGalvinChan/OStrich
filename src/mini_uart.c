@@ -3,8 +3,10 @@
 #include "memory_map/aux.h"
 #include "memory_map/gpio.h"
 
+#include <stdint.h>
+
 void mini_uart_init() {
-	unsigned int register_value;
+	uint32_t register_value;
 
 	// Sets GPIO Pin 14 and 15 to alternative function 5 for UART1 TXD/RXD
 	register_value = READ_REG_32(GPFSEL1);
