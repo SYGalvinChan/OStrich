@@ -28,7 +28,7 @@ The console is implemented using mini UART and provides basic abstraction. The c
 `console_readline()` repeatedly calls `mini_uart_rx()`, storing the characters in the buffer until a new line character is received. The string is then terminated with the null character and returned to the caller.
 
 ## Mini Universal Asynchronous Receiver/Transmitter
-The console is implemented using mini UART, which is one of the three Auxiliary peripherals. These AUX peripherals are memory mapped, where registers for controlling the peripherals are mapped to a specified memory addressed. Reading and writing to these memory addressed will allow us to read and write to the mapped registers. The memory addresses are defined in `include/memory_map/aux.h`, following Table 2 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
+The console is implemented using mini UART, which is one of the three Auxiliary peripherals. These AUX peripherals are memory mapped,  where a memory addresses are mapped to registers for controlling the peripherals. Reading and writing to these memory address will allow us to read and write to the mapped registers. The memory addresses are defined in `include/memory_map/aux.h`, following Table 2 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
 
 The mini UART is a secondary low throughput UART intended to be used as a console. It needs to be enabled before it can be used. It is also recommended that the correct GPIO function mode is selected before enabling the mini UART.
 
