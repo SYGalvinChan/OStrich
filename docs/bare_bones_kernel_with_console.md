@@ -20,6 +20,7 @@ Since this is a bare bones kernel with console, the `main()` function simply ini
 
 ## Console
 The console is implemented using mini UART and provides basic abstraction. The console maintains a buffer to store characters received from mini UART.
+The following functions are found in `src/console.c`.
 
 `console_init()` initializes the mini UART.
 
