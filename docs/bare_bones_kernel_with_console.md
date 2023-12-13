@@ -49,9 +49,9 @@ The initialization of the mini UART is done in `mini_uart_init()`.The steps are 
 ### Input and Output with mini UART 
 The mini UART features 8 symbols deep FIFOs for receive and transmit. Input and output with the mini UART is implemented in the `mini_uart_tx()` and `mini_uart_rx()` functions.
 
-`mini_uart_tx()` takes in as argument a `char`, waits for the transmit FIFO to be able to accept a symbol, before putting the argument into the transmit FIFO.
+`mini_uart_tx()` takes in as argument a character, waits for the transmit FIFO to be able to accept a symbol, before putting the argument into the transmit FIFO.
 
-`mini_uart_rx()` waits for the receive FIFO to hold at least one symbol before reading a symbol from the receive FIFO and returning a `char` to the caller.
+`mini_uart_rx()` waits for the receive FIFO to hold at least one symbol before reading a symbol from the receive FIFO and returning the character to the caller.
 
 ## General Purpose Input/Output
 As well as being able to be used as straightforward software controlled input and output (with programmable pulls), GPIO pins can be switched (multiplexed) into various other alternate functions backed by dedicated peripheral blocks such as I2C, UART and SPI.
