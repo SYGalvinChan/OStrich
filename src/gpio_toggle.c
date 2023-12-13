@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "gpio.h"
 #include "memory_map/gpio.h"
 
 #include <stdint.h>
@@ -6,27 +7,20 @@
 #define DELAY_LOOP 100000
 
 void infinite_loop_toggle_gpio() {
-    uint32_t register_value;
 
-	// Sets GPIO Pin 0 to output
-	register_value = READ_REG_32(GPFSEL0);
-	register_value = register_value & ~(0b111);
-	register_value = register_value | 0b001;
-	WRITE_REG_32(GPFSEL0, register_value);
+	// Sets GPIO Pin 5 to output
+	gpio_set_func(5, GPIO_FUNC_OUTPUT);
 
-    // Sets Pull Up/Pull Down resistor for GPIO Pin 0 to none
-	register_value = READ_REG_32(GPIO_PUP_PDN_CNTRL_REG0);
-	register_value = register_value & ~(0b11);
-	register_value = register_value | 0b00;
-	WRITE_REG_32(GPIO_PUP_PDN_CNTRL_REG0, register_value);
+    // Sets Pull Up/Pull Down resistor for GPIO Pin 5 to none
+	gpio_set_pull_state(5, GPIO_PULL_NONE);
 
     int set = 1;
     while (1) {
         if (set) {
-            WRITE_REG_32(GPSET0, 1);
+            gpio_set(5);
             set = 0;
         } else {
-            WRITE_REG_32(GPCLR0, 1);
+            gpio_clear(5);
             set = 1;
         }
         // Delay

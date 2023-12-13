@@ -1,5 +1,6 @@
 #include "mini_uart.h"
 #include "utils.h"
+#include "gpio.h"
 #include "memory_map/aux.h"
 #include "memory_map/gpio.h"
 
@@ -9,20 +10,12 @@ void mini_uart_init() {
 	uint32_t register_value;
 
 	// Sets GPIO Pin 14 and 15 to alternative function 5 for UART1 TXD/RXD
-	register_value = READ_REG_32(GPFSEL1);
-	register_value = register_value & ~(0b111 << 12);
-	register_value = register_value | 0b010 << 12;
-	register_value = register_value & ~(0b111 << 15);
-	register_value = register_value | 0b010 << 15;
-	WRITE_REG_32(GPFSEL1, register_value);
+	gpio_set_func(14, GPIO_FUNC_ALT_FUNC_5);
+	gpio_set_func(15, GPIO_FUNC_ALT_FUNC_5);
 
 	// Sets Pull Up/Pull Down resistor for GPIO Pin 14 and 15 to none
-	register_value = READ_REG_32(GPIO_PUP_PDN_CNTRL_REG0);
-	register_value = register_value & ~(0b11 << 28);
-	register_value = register_value | 0b00 << 28;
-	register_value = register_value & ~(0b11 << 30);
-	register_value = register_value | 0b00 << 30;
-	WRITE_REG_32(GPIO_PUP_PDN_CNTRL_REG0, register_value);
+	gpio_set_pull_state(14, GPIO_PULL_NONE);
+	gpio_set_pull_state(15, GPIO_PULL_NONE);
 
 	// Enable Mini UART
 	register_value = READ_REG_32(AUX_ENABLES);

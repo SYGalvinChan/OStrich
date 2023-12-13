@@ -4,7 +4,7 @@
 /*
  * The GPIO has the following registers. All accesses are assumed to be 32-bit. The GPIO register base address is 0x7e200000.
  */
-#define GPIO_BASE_ADDR          0x7E200000
+#define GPIO_BASE_ADDR          (void *) 0x7E200000
 
 #define GPFSEL0                 GPIO_BASE_ADDR + 0x00 // GPIO Function Select 0
 #define GPFSEL1                 GPIO_BASE_ADDR + 0x04 // GPIO Function Select 1
