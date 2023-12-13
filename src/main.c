@@ -1,10 +1,15 @@
 #include "console.h"
 
-void main(void) {
-	console_init();
-	console_write("HELLO WORLD!!!!\n");
+void infinite_loop_toggle_gpio();
 
-	while (1) {
-		console_write(console_readline());
-	}
+void main(void) {
+	
+	infinite_loop_toggle_gpio();
+
+	// console_init();
+	// console_write("HELLO WORLD!!!!\n");
+
+	// while (1) {
+	// 	console_write(console_readline());
+	// }
 }
