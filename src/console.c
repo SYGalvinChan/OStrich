@@ -1,7 +1,7 @@
 #include "console.h"
 #include "mini_uart.h"
 
-#define MAX_BUFFER_SIZE  100
+#define MAX_BUFFER_SIZE  0x100
 static char buffer[MAX_BUFFER_SIZE]; // Stores characters read from Mini UART to be returned by console_readline()
 
 void console_init() {
