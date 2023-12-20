@@ -11,8 +11,8 @@ The steps are as follows:
 
 1. Reads Core ID from a System register
 1. Core 1 - 3 goes into infinite loop while Core 0 continues (Will change later to allow other cores to be used)
-1. Clear memory region for `.bss` segment
 1. Initiallize stack pointer to a valid memory address
+1. Clear memory region for `.bss` segment
 1. Jump to `main()` function in `src/main.c` 
 
 ## Main Kernel
@@ -27,6 +27,15 @@ The following functions are found in `src/console.c`.
 `console_write()` takes in a null-terminated string, iterates over each character and calls `mini_uart_tx()` to transmit the character. 
 
 `console_readline()` repeatedly calls `mini_uart_rx()`, storing the characters in the buffer until a new line character is received. The string is then terminated with the null character and returned to the caller.
+
+## Note about Memory Addresses
+Low Peripheral mode is enabled by default. From paragraph 2 in Section 1.2.4. Legacy master addresses: 
+
+```
+So a peripheral described in this document as being at legacy address 0x7Enn_nnnn is available in the 35-bit address space at 0x4_7Enn_nnnn, and visible to the ARM at 0x0_FEnn_nnnn if Low Peripheral mode is enabled.
+```
+
+Therefore the base address of peripherals is `0xFE000000` instead of `0x7E000000`.
 
 ## Mini Universal Asynchronous Receiver/Transmitter
 The console is implemented using mini UART, which is one of the three Auxiliary peripherals. These AUX peripherals are memory mapped,  where a memory addresses are mapped to registers for controlling the peripherals. Reading and writing to these memory address will allow us to read and write to the mapped registers. The memory addresses are defined in `include/memory_map/aux.h`, following Table 2 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
