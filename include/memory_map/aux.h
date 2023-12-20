@@ -6,7 +6,7 @@
  * The Auxiliary register base address is 0x7E215000.
  */
 
-#define AUX_BASE_ADDR           0x7E215000
+#define AUX_BASE_ADDR           0xFE215000
 
 #define AUX_IRQ                 (uint32_t *) (AUX_BASE_ADDR + 0x00)  // Auxiliary Interrupt status
 #define AUX_ENABLES             (uint32_t *) (AUX_BASE_ADDR + 0x04)  // Auxiliary enables

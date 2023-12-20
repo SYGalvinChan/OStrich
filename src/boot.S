@@ -1,26 +1,30 @@
-.section ".text.boot"
+.section ".text.boot"  // Make sure the linker puts this at the start of the kernel image
 
-.globl _start
+.global _start  // Execution starts here
+
 _start:
-	// Reads Core ID from a System register
-	mrs	    x0, mpidr_el1		
-	and	    x0, x0, #0x03		
-	// Core 1 - 3 goes into infinite loop while Core 0 continues
-	cbnz	x0, infinite_loop	
-	// Clear memory region for .bss segment
-	adr	    x0, bss_begin
-	adr	    x1, bss_end
-	sub	    x1, x1, x0
-loop:	
-	cbz     x1, exit_loop
-	str     xzr, [x0], #8
-	subs    x1, x1, #8
-	b.gt loop
-exit_loop:	
-	// Initiallize stack pointer to a valid memory address
-    adr     x1, stack_end
+    // Check processor ID is zero (executing on main core), else hang
+    mrs     x1, mpidr_el1
+    and     x1, x1, #3
+    cbz     x1, 2f
+    // We're not on the main core, so hang in an infinite wait loop
+1:  wfe
+    b       1b
+2:  // We're on the main core!
+
+    // Set stack to start below our code
+    ldr     x1, =_start
     mov     sp, x1
-	// Jump to main() function in src/main.c
-	bl	    main
-infinite_loop: 
-	b 	    infinite_loop
+
+    // Clean the BSS section
+    ldr     x1, =__bss_start     // Start address
+    ldr     w2, =__bss_size      // Size of the section
+3:  cbz     w2, 4f               // Quit loop if zero
+    str     xzr, [x1], #8
+    sub     w2, w2, #1
+    cbnz    w2, 3b               // Loop if non-zero
+
+    // Jump to our main() routine in C (make sure it doesn't return)
+4:  bl      main
+    // In case it does return, halt the master core too
+    b       1b

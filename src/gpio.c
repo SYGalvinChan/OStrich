@@ -15,7 +15,7 @@ void gpio_set_func(int gpio_pin, int func) {
 
     register_value = READ_REG_32(gpio_sel_func_register);
     register_value = register_value & ~(0b111 << ((gpio_pin % 10) * 3));
-    register_value = register_value | func << ((gpio_pin % 10) * 3);
+    register_value = register_value | (func << ((gpio_pin % 10) * 3));
     WRITE_REG_32(gpio_sel_func_register, register_value);
 }
 
@@ -25,7 +25,7 @@ void gpio_set_pull_state(int gpio_pin, int pull_state) {
 
     register_value = READ_REG_32(gpio_pup_pdn_cntrl_register);
     register_value = register_value & ~(0b11 << ((gpio_pin % 16) * 2));
-    register_value = register_value | pull_state << ((gpio_pin % 16) * 2);
+    register_value = register_value | (pull_state << ((gpio_pin % 16) * 2));
     WRITE_REG_32(gpio_pup_pdn_cntrl_register, register_value);
 }
 
