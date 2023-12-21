@@ -1,3 +1,4 @@
+#include "sysregs.h"
 .section ".text.boot"  // Make sure the linker puts this at the start of the kernel image
 
 .global _start  // Execution starts here
@@ -11,7 +12,20 @@ _start:
 1:  wfe
     b       1b
 2:  // We're on the main core!
+    ldr	x0, =SCTLR_VALUE_MMU_DISABLED
+	msr	sctlr_el1, x0		
 
+	ldr	x0, =HCR_VALUE
+	msr	hcr_el2, x0
+
+	ldr	x0, =SPSR_VALUE
+	msr	spsr_el2, x0
+
+	adr	x0, el1_entry		
+	msr	elr_el2, x0
+
+	eret				
+el1_entry:
     // Set stack to start below our code
     ldr     x1, =_start
     mov     sp, x1
