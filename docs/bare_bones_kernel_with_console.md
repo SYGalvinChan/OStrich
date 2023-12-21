@@ -2,7 +2,7 @@
 
 ## Overview
 This release provides the implementation of a minimal Operating System targeting Raspberry Pi 4B with 4GB RAM.
-The kernel has no capabilities, it simply reads input from the console and writes it back.
+The kernel has no capabilities, it simply writes a hello world message.
 A basic console is implemented using mini UART to allow the Operating System to communicate with the dev machine for debugging and testing.
 
 ## Entry Point
@@ -16,7 +16,7 @@ The steps are as follows:
 1. Jump to `main()` function in `src/main.c` 
 
 ## Main Kernel
-Since this is a bare bones kernel with console, the `main()` function simply initializes the console, writes `Hello World` to the console, then goes into infinite loop that reads a line from the console and writes it back.
+Since this is a bare bones kernel with console, the `main()` function simply initializes the console, writes `Hello World` to the console, then goes into infinite loop that prints `.` to indicate the kernel is still alive.
 
 ## Console
 The console is implemented using mini UART and provides basic abstraction. The console maintains a buffer to store characters received from mini UART.
@@ -24,11 +24,12 @@ The following functions are found in `src/console.c`.
 
 `console_init()` initializes the mini UART.
 
-`console_write()` takes in a null-terminated string, iterates over each character and calls `mini_uart_tx()` to transmit the character. 
+`console_write()` takes in a null-terminated string, iterates over each character and calls `mini_uart_tx()` to transmit the character.
 
-`console_readline()` repeatedly calls `mini_uart_rx()`, storing the characters in the buffer until a new line character is received. The string is then terminated with the null character and returned to the caller.
+### Printf
+`console_write()` provides a way to print a constant string to the console. With `printf()`, values stored in variables can now be printed to the console. Such functionality is essential for the kernel development to figure out what is going on inside the program. The link to a lightweight implementation of `printf()` can be found [here](http://www.sparetimelabs.com/tinyprintf/tinyprintf.php).
 
-## Note about Memory Addresses
+## Note about Memory Mapped Peripherals
 Low Peripheral mode is enabled by default. From paragraph 2 in Section 1.2.4. Legacy master addresses: 
 
 ```

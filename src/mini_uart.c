@@ -54,4 +54,7 @@ char mini_uart_rx() {
 	return (char) READ_REG_32(AUX_MU_IO_REG);
 }
 
+void putc ( void* p, char c) {
+	mini_uart_tx(c);
+}
 
