@@ -20,15 +20,6 @@ void mini_uart_init() {
 	// Set data size to 8 bits and allow access to baudrate register
 	WRITE_REG_32(AUX_MU_LCR_REG, 3);
 
-    // Set RTS to high
-    WRITE_REG_32(AUX_MU_MCR_REG, 0);
-
-	// Disable transmit and receive interupts 
-	WRITE_REG_32(AUX_MU_IER_REG, 0);
-
-	// Dunno
-	WRITE_REG_32(AUX_MU_IIR_REG, 0xC6);
-
 	// Set baudrate to 115200
 	WRITE_REG_32(AUX_MU_BAUD_REG, ((500000000/(115200*8))-1));
 
