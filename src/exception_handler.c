@@ -3,15 +3,62 @@
 #include "memory_map/interupt_controller.h"
 #include "printf.h"
 #include "HAL/system_timer.h"
+#include "exception_handler.h"
+
+void (*irq_pending2_handlers[32]) ();
+void (*irq_pending1_handlers[32]) ();
+void (*irq_pending0_handlers[32]) ();
+void (*irq_source_handlers[32]) ();
+
+
+void exception_handler_init() {
+	irq_source_handlers[8] = core_irq_handler;
+	irq_pending2_handlers[24] = lower_VC_peripheral_irq_handler;
+	irq_pending2_handlers[25] = upper_VC_peripheral_irq_handler;
+	irq_pending0_handlers[1] = handle_system_timer_irq;
+}
 
 void handle_irq() {
-	uint32_t top_level_status_register = READ_REG_32(IRQ_SOURCE0);
-	uint32_t second_level_status_register = READ_REG_32(IRQ0_PENDING2);
-	uint32_t third_level_status_register = READ_REG_32(IRQ0_PENDING0);
-	if ((top_level_status_register & 0x100) 
-			&& (second_level_status_register & 1 << 24)
-			&& (third_level_status_register & 2)) {
-		handle_system_timer_irq(SYSTEM_TIMER_1);
+	uint32_t irq_source = READ_REG_32(IRQ_SOURCE0);
+	uint32_t mask = 1;
+	for (int i = 0; i < 32; i++) {
+		if (irq_source & mask) {
+			(*irq_source_handlers[i])();
+		}
+		mask = mask << 1;
+	}
+}
+
+void core_irq_handler() {
+	uint32_t irq_source = READ_REG_32(IRQ0_PENDING2);
+	uint32_t mask = 1;
+	for (int i = 0; i < 32; i++) {
+		if (irq_source & mask) {
+			(*irq_pending2_handlers[i])();
+		}
+		mask = mask << 1;
+	}
+}
+
+void lower_VC_peripheral_irq_handler() {
+	uint32_t irq_source = READ_REG_32(IRQ0_PENDING0);
+	uint32_t mask = 1;
+	for (int i = 0; i < 32; i++) {
+		if (irq_source & mask) {
+			(*irq_pending0_handlers[i])();
+		}
+		mask = mask << 1;
+	}
+}
+
+void upper_VC_peripheral_irq_handler() {
+	uint32_t irq_source = READ_REG_32(IRQ0_PENDING1);
+	uint32_t mask = 1;
+	for (int i = 0; i < 32; i++) {
+		if (irq_source & mask) {
+			(*irq_pending1_handlers[i])();
+		}
+		mask = mask << 1;
 	}
 }
 

@@ -10,6 +10,6 @@
 
 void system_timer_init();
 
-void handle_system_timer_irq(int timer);
+void handle_system_timer_irq();
 
 #endif // SYSTEM_TIMER_H

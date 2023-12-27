@@ -3,6 +3,7 @@
 #include "HAL/interupt_controller.h"
 #include "HAL/system_timer.h"
 #include <stdint.h>
+#include "exception_handler.h"
 
 void irq_init_vectors();
 void irq_enable();
@@ -16,6 +17,7 @@ void main(void) {
 	irq_init_vectors();
 	system_timer_init();	
 	interupt_controller_init();	
+	exception_handler_init();
 	irq_enable();
 
 	while (1) {

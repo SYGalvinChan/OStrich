@@ -13,10 +13,10 @@ void system_timer_init() {
 
 }
 
-void handle_system_timer_irq(int timer) {
+void handle_system_timer_irq() {
     printf("handle_system_timer_irq() called\r\n");
-    WRITE_REG_32(CS, (1 << timer));
-    uint32_t * compare_register = compare_registers[timer];
+    WRITE_REG_32(CS, 2);
+    uint32_t * compare_register = compare_registers[1];
     uint32_t register_value = READ_REG_32(CLO);
     register_value += COUNTER_INTERVAL;
     WRITE_REG_32(compare_register, register_value);    
