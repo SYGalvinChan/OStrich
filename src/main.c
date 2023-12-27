@@ -1,27 +1,28 @@
 #include "console.h"
+#include "interupt_controller.h"
 #include "printf.h"
+#include "system_timer.h"
 #include <stdint.h>
 
-int current_EL();
+void irq_init_vectors();
+void irq_enable();
+void irq_disable();
 
 void main(void) {
 
 	console_init();
 	console_write("Console initialized!!!!\r\n");
-	printf("Current Exception Level: %d\r\n", current_EL());
+
+	irq_init_vectors();
+	system_timer_init();	
+	interupt_controller_init();	
+	irq_enable();
 
 	while (1) {
 		volatile int i = 0;
 		while (i < 1000000) {
 			i++;
 		}
-		console_write(".");
+		printf(".");
 	}
-}
-
-int current_EL() {
-	int register_value;
-	asm ("mrs %0, CurrentEL" : "=r" (register_value));
-	register_value = register_value >> 2;
-	return register_value;
 }

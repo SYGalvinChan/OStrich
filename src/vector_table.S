@@ -1,30 +1,30 @@
-#define S_FRAME_SIZE			256 
+#define SYNC_INVALID_EL1t		0 
+#define IRQ_INVALID_EL1t		1 
+#define FIQ_INVALID_EL1t		2 
+#define ERROR_INVALID_EL1t		3 
 
-.globl el1_vector_table_init
-el1_vector_table_init:
-    adr    x0, el1_vector_table
-    msr    vbar_el1, x0
-    ret
+#define SYNC_INVALID_EL1h		4 
+#define IRQ_INVALID_EL1h		5 
+#define FIQ_INVALID_EL1h		6 
+#define ERROR_INVALID_EL1h		7 
 
-.globl enable_irq
-enable_irq:
-    msr    daifclr, #2
-    ret
+#define SYNC_INVALID_EL0_64		8 
+#define IRQ_INVALID_EL0_64		9 
+#define FIQ_INVALID_EL0_64		10 
+#define ERROR_INVALID_EL0_64		11 
 
-.globl disable_irq
-disable_irq:
-    msr    daifset, #2
-    ret
+#define SYNC_INVALID_EL0_32		12 
+#define IRQ_INVALID_EL0_32		13 
+#define FIQ_INVALID_EL0_32		14 
+#define ERROR_INVALID_EL0_32		15 
 
-.macro    vector_table_entry    label
-.align    7
-    b    \label
-.endm
+//stack frame size
+#define S_FRAME_SIZE			256
 
-.macro	kernel_entry
-	sub	sp, sp, #S_FRAME_SIZE
-	stp	x0, x1, [sp, #16 * 0]
-	stp	x2, x3, [sp, #16 * 1]
+.macro kernel_entry
+	sub 	sp, sp, #S_FRAME_SIZE
+	stp 	x0, x1, [sp, #16 * 0]
+	stp 	x2, x3, [sp, #16 * 1]
 	stp	x4, x5, [sp, #16 * 2]
 	stp	x6, x7, [sp, #16 * 3]
 	stp	x8, x9, [sp, #16 * 4]
@@ -41,7 +41,7 @@ disable_irq:
 	str	x30, [sp, #16 * 15] 
 .endm
 
-.macro	kernel_exit
+.macro kernel_exit
 	ldp	x0, x1, [sp, #16 * 0]
 	ldp	x2, x3, [sp, #16 * 1]
 	ldp	x4, x5, [sp, #16 * 2]
@@ -58,97 +58,119 @@ disable_irq:
 	ldp	x26, x27, [sp, #16 * 13]
 	ldp	x28, x29, [sp, #16 * 14]
 	ldr	x30, [sp, #16 * 15] 
-	add	sp, sp, #S_FRAME_SIZE		
+	add	sp, sp, #S_FRAME_SIZE
 	eret
 .endm
 
-/*
- * Exception vectors.
- */
+.macro handle_invalid_entry type
+	kernel_entry
+	mov	x0, #\type
+	mrs	x1, esr_el1
+	mrs	x2, elr_el1
+
+        // We could pass this to a function to print an error here
+        // e.g. bl show_invalid_entry_message
+        //
+        // For now we'll just hang
+
+	b	err_hang
+.endm
+
+.macro	ventry	label
+.align	7
+	b	\label
+.endm
+
+//Exception vectors table
 .align	11
-.globl el1_vector_table 
-el1_vector_table:
-    vector_table_entry sync_el1t			// Synchronous EL1t
-	vector_table_entry irq_el1t			    // IRQ EL1t
-	vector_table_entry fiq_el1t			    // FIQ EL1t
-	vector_table_entry error_el1t			// Error EL1t
+.globl vectors 
+vectors:
+	ventry	sync_invalid_el1t			// Synchronous EL1t
+	ventry	irq_invalid_el1t			// IRQ EL1t
+	ventry	fiq_invalid_el1t			// FIQ EL1t
+	ventry	error_invalid_el1t			// Error EL1t
 
-	vector_table_entry sync_el1h			// Synchronous EL1h
-	vector_table_entry irq_el1h			    // IRQ EL1h
-	vector_table_entry fiq_el1h			    // FIQ EL1h
-	vector_table_entry error_el1h			// Error EL1h
+	ventry	sync_invalid_el1h			// Synchronous EL1h
+	ventry	handle_el1_irq				// IRQ EL1h
+	ventry	fiq_invalid_el1h			// FIQ EL1h
+	ventry	error_invalid_el1h			// Error EL1h
 
-	vector_table_entry sync_el0_64			// Synchronous 64-bit EL0
-	vector_table_entry irq_el0_64			// IRQ 64-bit EL0
-	vector_table_entry fiq_el0_64			// FIQ 64-bit EL0
-	vector_table_entry error_el0_64			// Error 64-bit EL0
+	ventry	sync_invalid_el0_64			// Synchronous 64-bit EL0
+	ventry	irq_invalid_el0_64			// IRQ 64-bit EL0
+	ventry	fiq_invalid_el0_64			// FIQ 64-bit EL0
+	ventry	error_invalid_el0_64			// Error 64-bit EL0
 
-	vector_table_entry sync_el0_32			// Synchronous 32-bit EL0
-	vector_table_entry irq_el0_32			// IRQ 32-bit EL0
-	vector_table_entry fiq_el0_32			// FIQ 32-bit EL0
-	vector_table_entry error_el0_32			// Error 32-bit EL0
+	ventry	sync_invalid_el0_32			// Synchronous 32-bit EL0
+	ventry	irq_invalid_el0_32			// IRQ 32-bit EL0
+	ventry	fiq_invalid_el0_32			// FIQ 32-bit EL0
+	ventry	error_invalid_el0_32			// Error 32-bit EL0
 
-sync_el1t:
-    kernel_entry
-    bl handle_sync_el1t
-    kernel_exit
-irq_el1t:
-    kernel_entry
-    bl handle_irq_el1t
-    kernel_exit
-fiq_el1t:
-    kernel_entry
-    bl handle_fiq_el1t
-    kernel_exit
-error_el1t:
-    kernel_entry
-    bl handle_error_el1t
-    kernel_exit
-sync_el1h:
-    kernel_entry
-    bl handle_sync_el1h
-    kernel_exit
-irq_el1h:
-    kernel_entry
-    bl handle_irq_el1h
-    kernel_exit
-fiq_el1h:
-    kernel_entry
-    bl handle_fiq_el1h
-    kernel_exit
-error_el1h:
-    kernel_entry
-    bl handle_error_el1h
-    kernel_exit
-sync_el0_64:
-    kernel_entry
-    bl handle_sync_el0_64
-    kernel_exit
-irq_el0_64:
-    kernel_entry
-    bl handle_irq_el0_64
-    kernel_exit
-fiq_el0_64:
-    kernel_entry
-    bl handle_fiq_el0_64
-    kernel_exit
-error_el0_64:
-    kernel_entry
-    bl handle_error_el0_64
-    kernel_exit
-sync_el0_32:
-    kernel_entry
-    bl handle_sync_el0_32
-    kernel_exit
-irq_el0_32:
-    kernel_entry
-    bl handle_irq_el0_32
-    kernel_exit
-fiq_el0_32:
-    kernel_entry
-    bl handle_fiq_el0_32
-    kernel_exit
-error_el0_32:
-    kernel_entry
-    bl handle_error_el0_32
-    kernel_exit
+
+sync_invalid_el1t:
+	handle_invalid_entry  SYNC_INVALID_EL1t
+
+irq_invalid_el1t:
+	handle_invalid_entry  IRQ_INVALID_EL1t
+
+fiq_invalid_el1t:
+	handle_invalid_entry  FIQ_INVALID_EL1t
+
+error_invalid_el1t:
+	handle_invalid_entry  ERROR_INVALID_EL1t
+
+sync_invalid_el1h:
+	handle_invalid_entry  SYNC_INVALID_EL1h
+
+fiq_invalid_el1h:
+	handle_invalid_entry  FIQ_INVALID_EL1h
+
+error_invalid_el1h:
+	handle_invalid_entry  ERROR_INVALID_EL1h
+
+sync_invalid_el0_64:
+	handle_invalid_entry  SYNC_INVALID_EL0_64
+
+irq_invalid_el0_64:
+	handle_invalid_entry  IRQ_INVALID_EL0_64
+
+fiq_invalid_el0_64:
+	handle_invalid_entry  FIQ_INVALID_EL0_64
+
+error_invalid_el0_64:
+	handle_invalid_entry  ERROR_INVALID_EL0_64
+
+sync_invalid_el0_32:
+	handle_invalid_entry  SYNC_INVALID_EL0_32
+
+irq_invalid_el0_32:
+	handle_invalid_entry  IRQ_INVALID_EL0_32
+
+fiq_invalid_el0_32:
+	handle_invalid_entry  FIQ_INVALID_EL0_32
+
+error_invalid_el0_32:
+	handle_invalid_entry  ERROR_INVALID_EL0_32
+
+handle_el1_irq:
+	kernel_entry 
+	bl	handle_irq
+	kernel_exit 
+
+.globl err_hang
+err_hang: b err_hang
+
+.globl irq_init_vectors
+irq_init_vectors:
+    adr x0, vectors
+    msr vbar_el1, x0
+    ret
+
+.globl irq_enable
+irq_enable:
+    msr daifclr, #2
+    ret
+
+.globl irq_disable
+irq_disable:
+    msr daifset, #2
+    ret

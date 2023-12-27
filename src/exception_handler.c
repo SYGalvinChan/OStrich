@@ -1,65 +1,43 @@
+#include <stdint.h>
+#include "utils.h"
+#include "memory_map/interupt_controller.h"
 #include "printf.h"
+#include "system_timer.h"
 
-void handle_sync_el1t() {
-    printf("Synchronous Exception in EL1t\r\n");
+void handle_irq() {
+	uint32_t top_level_status_register = READ_REG_32(IRQ_SOURCE0);
+	uint32_t second_level_status_register = READ_REG_32(IRQ0_PENDING2);
+	uint32_t third_level_status_register = READ_REG_32(IRQ0_PENDING0);
+	if ((top_level_status_register & 0x100) 
+			&& (second_level_status_register & 1 << 24)
+			&& (third_level_status_register & 2)) {
+		handle_system_timer_irq(SYSTEM_TIMER_1);
+	}
 }
 
-void handle_irq_el1t() {
-    printf("IRQ in EL1t\r\n");
-}
+const char *entry_error_messages[] = {
+	"SYNC_INVALID_EL1t",
+	"IRQ_INVALID_EL1t",		
+	"FIQ_INVALID_EL1t",		
+	"ERROR_INVALID_EL1T",		
 
-void handle_fiq_el1t() {
-    printf("FIQ in EL1t\r\n");
-}
+	"SYNC_INVALID_EL1h",		
+	"IRQ_INVALID_EL1h",		
+	"FIQ_INVALID_EL1h",		
+	"ERROR_INVALID_EL1h",		
 
-void handle_error_el1t() {
-    printf("SError in EL1t\r\n");
-}	
+	"SYNC_INVALID_EL0_64",		
+	"IRQ_INVALID_EL0_64",		
+	"FIQ_INVALID_EL0_64",		
+	"ERROR_INVALID_EL0_64",	
 
-void handle_sync_el1h() {
-    printf("Synchronous Exception in EL1h\r\n");
-}
+	"SYNC_INVALID_EL0_32",		
+	"IRQ_INVALID_EL0_32",		
+	"FIQ_INVALID_EL0_32",		
+	"ERROR_INVALID_EL0_32"	
+};
 
-void handle_irq_el1h() {
-    printf("IRQ in EL1h\r\n");
-}
-
-void handle_fiq_el1h() {
-    printf("FIQ in EL1h\r\n");
-}
-
-void handle_error_el1h() {
-    printf("SError in EL1h\r\n");
-}	
-
-void handle_sync_el0_64() {
-    printf("Synchronous Exception in EL0_64\r\n");
-}
-
-void handle_irq_el0_64() {
-    printf("IRQ in EL0_64\r\n");
-}
-
-void handle_fiq_el0_64() {
-    printf("FIQ in EL0_64\r\n");
-}
-
-void handle_error_el0_64() {
-    printf("SError in EL0_64\r\n");
-}
-
-void handle_sync_el0_32() {
-    printf("Synchronous Exception in EL0_32\r\n");
-}
-
-void handle_irq_el0_32() {
-    printf("IRQ in EL0_32\r\n");
-}
-
-void handle_fiq_el0_32() {
-    printf("FIQ in EL0_32\r\n");
-}
-
-void handle_error_el0_32() {
-    printf("SError in EL0_32\r\n");
+void show_invalid_entry_message(int type, unsigned long esr, unsigned long address)
+{
+	printf("%s, ESR: %x, address: %x\r\n", entry_error_messages[type], esr, address);
 }
