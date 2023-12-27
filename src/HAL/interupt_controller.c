@@ -1,4 +1,4 @@
-#include "interupt_controller.h"
+#include "HAL/interupt_controller.h"
 #include "memory_map/interupt_controller.h"
 #include "utils.h"
 #include "printf.h"

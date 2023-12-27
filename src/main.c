@@ -1,7 +1,7 @@
 #include "console.h"
-#include "interupt_controller.h"
 #include "printf.h"
-#include "system_timer.h"
+#include "HAL/interupt_controller.h"
+#include "HAL/system_timer.h"
 #include <stdint.h>
 
 void irq_init_vectors();

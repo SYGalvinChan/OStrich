@@ -1,6 +1,6 @@
-#include "mini_uart.h"
+#include "HAL/mini_uart.h"
 #include "utils.h"
-#include "gpio.h"
+#include "HAL/gpio.h"
 #include "memory_map/aux.h"
 #include "memory_map/gpio.h"
 

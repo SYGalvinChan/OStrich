@@ -2,6 +2,7 @@ GCCPATH = ../gcc-arm-10.3-2021.07-x86_64-aarch64-none-elf/bin
 
 BUILD_DIR = build
 SRC_DIR = src
+SUBDIR = src/HAL
 INCLUDE_DIR = include
 
 COPS = -Wall -nostdlib -nostartfiles -ffreestanding -I$(INCLUDE_DIR) -mgeneral-regs-only
@@ -20,6 +21,7 @@ $(BUILD_DIR)/%_s.o: $(SRC_DIR)/%.S
 		$(GCCPATH)/aarch64-none-elf-gcc $(ASMOPS) -MMD -c $< -o $@
 
 C_FILES = $(wildcard $(SRC_DIR)/*.c)
+C_FILES += $(wildcard *.c $(foreach fd, $(SUBDIR), $(fd)/*.c))
 ASM_FILES = $(wildcard $(SRC_DIR)/*.S)
 H_FILES = $(wildcard $(INCLUDE_DIR)/*.h)
 

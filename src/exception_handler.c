@@ -2,7 +2,7 @@
 #include "utils.h"
 #include "memory_map/interupt_controller.h"
 #include "printf.h"
-#include "system_timer.h"
+#include "HAL/system_timer.h"
 
 void handle_irq() {
 	uint32_t top_level_status_register = READ_REG_32(IRQ_SOURCE0);

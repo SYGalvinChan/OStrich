@@ -1,5 +1,5 @@
 #include "console.h"
-#include "mini_uart.h"
+#include "HAL/mini_uart.h"
 #include "printf.h"
 
 void console_init() {
