@@ -1,32 +1,32 @@
 #ifndef MM_INTERUPT_CONTROLLER_H
 #define MM_INTERUPT_CONTROLLER_H
 
-#define ARM_LOCOAL_BASE_ADDRESS 0xFF800000
+#define ARM_LOCAL_BASE_ADDRESS 0xFF800000
 
-#define ARM_CONTROL         ARM_LOCOAL_BASE_ADDRESS + 0x00    // ARM Timer and AXI Error IRQ control
-#define CORE_IRQ_CONTROL    ARM_LOCOAL_BASE_ADDRESS + 0x0c    // VideoCore Interrupt Control
-#define PMU_CONTROL_SET     ARM_LOCOAL_BASE_ADDRESS + 0x10    // PMU Bit Set
-#define PMU_CONTROL_CLR     ARM_LOCOAL_BASE_ADDRESS + 0x14    // PMU Bit Clear
-#define PERI_IRQ_ROUTE0     ARM_LOCOAL_BASE_ADDRESS + 0x24    // Peripheral Interrupt Routing (Bank 0)
-#define AXI_QUIET_TIME      ARM_LOCOAL_BASE_ADDRESS + 0x30    // AXI Outstanding Transaction Time and IRQ Control
-#define LOCAL_TIMER_CONTROL ARM_LOCOAL_BASE_ADDRESS + 0x34    // Local Timer Control
-#define LOCAL_TIMER_IRQ     ARM_LOCOAL_BASE_ADDRESS + 0x38    // Local Timer Reload and Interrupt
-#define TIMER_CNTRL0 Timer  ARM_LOCOAL_BASE_ADDRESS + 0x40    // Interrupt Control for ARM Core 0
-#define TIMER_CNTRL1 Timer  ARM_LOCOAL_BASE_ADDRESS + 0x44    // Interrupt Control for ARM Core 1
-#define TIMER_CNTRL2 Timer  ARM_LOCOAL_BASE_ADDRESS + 0x48    // Interrupt Control for ARM Core 2
-#define TIMER_CNTRL3 Timer  ARM_LOCOAL_BASE_ADDRESS + 0x4c    // Interrupt Control for ARM Core 3
-#define MAILBOX_CNTRL0      ARM_LOCOAL_BASE_ADDRESS + 0x50    // Mailbox Interrupt Control for ARM Core 0
-#define MAILBOX_CNTRL1      ARM_LOCOAL_BASE_ADDRESS + 0x54    // Mailbox Interrupt Control for ARM Core 1
-#define MAILBOX_CNTRL2      ARM_LOCOAL_BASE_ADDRESS + 0x58    // Mailbox Interrupt Control for ARM Core 2
-#define MAILBOX_CNTRL3      ARM_LOCOAL_BASE_ADDRESS + 0x5c    // Mailbox Interrupt Control for ARM Core 3
-#define IRQ_SOURCE0         ARM_LOCOAL_BASE_ADDRESS + 0x60    // IRQ Source flags for ARM Core 0
-#define IRQ_SOURCE1         ARM_LOCOAL_BASE_ADDRESS + 0x64    // IRQ Source flags for ARM Core 1
-#define IRQ_SOURCE2         ARM_LOCOAL_BASE_ADDRESS + 0x68    // IRQ Source flags for ARM Core 2
-#define IRQ_SOURCE3         ARM_LOCOAL_BASE_ADDRESS + 0x6c    // IRQ Source flags for ARM Core 3
-#define FIQ_SOURCE0         ARM_LOCOAL_BASE_ADDRESS + 0x70    // FIQ Source flags for ARM Core 0
-#define FIQ_SOURCE1         ARM_LOCOAL_BASE_ADDRESS + 0x74    // FIQ Source flags for ARM Core 1
-#define FIQ_SOURCE2         ARM_LOCOAL_BASE_ADDRESS + 0x78    // FIQ Source flags for ARM Core 2
-#define FIQ_SOURCE3         ARM_LOCOAL_BASE_ADDRESS + 0x7c    // FIQ Source flags for ARM Core 3
+#define ARM_CONTROL         ARM_LOCAL_BASE_ADDRESS + 0x00    // ARM Timer and AXI Error IRQ control
+#define CORE_IRQ_CONTROL    ARM_LOCAL_BASE_ADDRESS + 0x0c    // VideoCore Interrupt Control
+#define PMU_CONTROL_SET     ARM_LOCAL_BASE_ADDRESS + 0x10    // PMU Bit Set
+#define PMU_CONTROL_CLR     ARM_LOCAL_BASE_ADDRESS + 0x14    // PMU Bit Clear
+#define PERI_IRQ_ROUTE0     ARM_LOCAL_BASE_ADDRESS + 0x24    // Peripheral Interrupt Routing (Bank 0)
+#define AXI_QUIET_TIME      ARM_LOCAL_BASE_ADDRESS + 0x30    // AXI Outstanding Transaction Time and IRQ Control
+#define LOCAL_TIMER_CONTROL ARM_LOCAL_BASE_ADDRESS + 0x34    // Local Timer Control
+#define LOCAL_TIMER_IRQ     ARM_LOCAL_BASE_ADDRESS + 0x38    // Local Timer Reload and Interrupt
+#define TIMER_CNTRL0 Timer  ARM_LOCAL_BASE_ADDRESS + 0x40    // Interrupt Control for ARM Core 0
+#define TIMER_CNTRL1 Timer  ARM_LOCAL_BASE_ADDRESS + 0x44    // Interrupt Control for ARM Core 1
+#define TIMER_CNTRL2 Timer  ARM_LOCAL_BASE_ADDRESS + 0x48    // Interrupt Control for ARM Core 2
+#define TIMER_CNTRL3 Timer  ARM_LOCAL_BASE_ADDRESS + 0x4c    // Interrupt Control for ARM Core 3
+#define MAILBOX_CNTRL0      ARM_LOCAL_BASE_ADDRESS + 0x50    // Mailbox Interrupt Control for ARM Core 0
+#define MAILBOX_CNTRL1      ARM_LOCAL_BASE_ADDRESS + 0x54    // Mailbox Interrupt Control for ARM Core 1
+#define MAILBOX_CNTRL2      ARM_LOCAL_BASE_ADDRESS + 0x58    // Mailbox Interrupt Control for ARM Core 2
+#define MAILBOX_CNTRL3      ARM_LOCAL_BASE_ADDRESS + 0x5c    // Mailbox Interrupt Control for ARM Core 3
+#define IRQ_SOURCE0         ARM_LOCAL_BASE_ADDRESS + 0x60    // IRQ Source flags for ARM Core 0
+#define IRQ_SOURCE1         ARM_LOCAL_BASE_ADDRESS + 0x64    // IRQ Source flags for ARM Core 1
+#define IRQ_SOURCE2         ARM_LOCAL_BASE_ADDRESS + 0x68    // IRQ Source flags for ARM Core 2
+#define IRQ_SOURCE3         ARM_LOCAL_BASE_ADDRESS + 0x6c    // IRQ Source flags for ARM Core 3
+#define FIQ_SOURCE0         ARM_LOCAL_BASE_ADDRESS + 0x70    // FIQ Source flags for ARM Core 0
+#define FIQ_SOURCE1         ARM_LOCAL_BASE_ADDRESS + 0x74    // FIQ Source flags for ARM Core 1
+#define FIQ_SOURCE2         ARM_LOCAL_BASE_ADDRESS + 0x78    // FIQ Source flags for ARM Core 2
+#define FIQ_SOURCE3         ARM_LOCAL_BASE_ADDRESS + 0x7c    // FIQ Source flags for ARM Core 3
 
 #define ARMC_BASE_ADDRESS 0xFE00B000
 
