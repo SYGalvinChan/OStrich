@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include "utils.h"
 #include "memory_map/interupt_controller.h"
-#include "printf.h"
 #include "HAL/system_timer.h"
 #include "exception_handler.h"
+#include "console.h"
 
 void (*irq_pending2_handlers[32]) ();
 void (*irq_pending1_handlers[32]) ();

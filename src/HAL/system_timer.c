@@ -1,8 +1,8 @@
 #include "HAL/system_timer.h"
 #include "memory_map/system_timer.h"
+#include "console.h"
 #include "utils.h"
 #include <stdint.h>
-#include "printf.h"
 uint32_t * compare_registers[] = {C0, C1, C2, C3};
 
 void system_timer_init() {

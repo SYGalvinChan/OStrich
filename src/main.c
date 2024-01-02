@@ -1,5 +1,4 @@
 #include "console.h"
-#include "printf.h"
 #include "HAL/interupt_controller.h"
 #include "HAL/system_timer.h"
 #include <stdint.h>
@@ -17,7 +16,7 @@ int cpu_id();
 void main(void) {
 	if (cpu_id() == 0) {
 		console_init();
-		console_write("Console initialized!!!!\r\n");
+		printf("Console initialized!!!!\r\n");
 
 		// irq_init_vectors();
 		// system_timer_init();	
@@ -33,7 +32,7 @@ void main(void) {
 		while (i < 1000000) {
 			i++;
 		}
-		printf("%d", cpu_id());
+		printf("CPU ID: %d - ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n", cpu_id());
 	}
 }
 
