@@ -10,8 +10,18 @@ void (*irq_pending1_handlers[32]) ();
 void (*irq_pending0_handlers[32]) ();
 void (*irq_source_handlers[32]) ();
 
+void unsupported_irq_handler();
+void core_irq_handler();
+void lower_VC_peripheral_irq_handler();
+void upper_VC_peripheral_irq_handler();
 
 void exception_handler_init() {
+	for (int i = 0; i < 32; i++) {
+		irq_source_handlers[i] = unsupported_irq_handler;
+		irq_pending2_handlers[i] = unsupported_irq_handler;
+		irq_pending2_handlers[i] = unsupported_irq_handler;
+		irq_pending0_handlers[i] = unsupported_irq_handler;
+	}
 	irq_source_handlers[8] = core_irq_handler;
 	irq_pending2_handlers[24] = lower_VC_peripheral_irq_handler;
 	irq_pending2_handlers[25] = upper_VC_peripheral_irq_handler;
@@ -60,6 +70,14 @@ void upper_VC_peripheral_irq_handler() {
 		}
 		mask = mask << 1;
 	}
+}
+
+void unsupported_irq_handler() {
+	printf("Unsupported IRQ SRC: %x P2: %x P1: %x P0: %x\r\n",
+			READ_REG_32(IRQ_SOURCE0),
+			READ_REG_32(IRQ0_PENDING2),
+			READ_REG_32(IRQ0_PENDING1),
+			READ_REG_32(IRQ0_PENDING0));
 }
 
 const char *entry_error_messages[] = {
