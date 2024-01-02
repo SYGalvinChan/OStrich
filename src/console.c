@@ -1,9 +1,13 @@
 #include "console.h"
 #include "HAL/mini_uart.h"
+#include "mutex.h"
+
+static struct mutex console_mutex;
 
 void console_init() {
 	mini_uart_init();
 	init_printf(0, putc);
+	mutex_init(&console_mutex, "console");
 }
 
 typedef void (*putcf) (void*,char);
@@ -144,10 +148,12 @@ void init_printf(void* putp,void (*putf) (void*,char))
 
 void printf(char *fmt, ...)
     {
+	mutex_lock(&console_mutex);
     va_list va;
     va_start(va,fmt);
     tfp_format(stdout_putp,stdout_putf,fmt,va);
     va_end(va);
+	mutex_unlock(&console_mutex);
     }
 
 static void putcp(void* p,char c)
