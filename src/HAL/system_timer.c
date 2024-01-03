@@ -3,21 +3,27 @@
 #include "console.h"
 #include "utils.h"
 #include <stdint.h>
-uint32_t * compare_registers[] = {C0, C1, C2, C3};
 
 void system_timer_init() {
+    // Clear match status bit first
     WRITE_REG_32(CS, 0x0F);
+    // Set compare register for timer 1
     uint32_t register_value = READ_REG_32(CLO);
     register_value += COUNTER_INTERVAL;
     WRITE_REG_32(C1, register_value);
-
 }
 
-void handle_system_timer_irq() {
-    printf("handle_system_timer_irq() called\r\n");
-    WRITE_REG_32(CS, 2);
-    uint32_t * compare_register = compare_registers[1];
-    uint32_t register_value = READ_REG_32(CLO);
-    register_value += COUNTER_INTERVAL;
-    WRITE_REG_32(compare_register, register_value);    
+void handle_system_timer1_irq() {
+    if (cpu_id() == 0) {
+        delay(0x500);
+        printf("Timer 1 cleared by CPU ID:%d\r\n", cpu_id());
+        // Clear match status bit
+        WRITE_REG_32(CS, 2);
+
+        uint32_t clo_register_value = READ_REG_32(CLO);
+        clo_register_value += COUNTER_INTERVAL;
+        WRITE_REG_32(C1, clo_register_value);  
+    }
+    printf("Timer 1 interupted CPU ID:%d\r\n", cpu_id());
+    delay(0x2000);
 }

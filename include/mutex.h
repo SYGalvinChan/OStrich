@@ -3,6 +3,7 @@
 
 struct mutex {
     int locked;
+    int prev_irq_enabled;
 
     // For debugging
     char* name;
