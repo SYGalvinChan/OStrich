@@ -11,7 +11,7 @@ void mini_uart_init() {
 	// Enable Mini UART
 	WRITE_REG_32(AUX_ENABLES, 1);
 
-	// Disable transmit and receive interupts 
+	// Disable transmit and receive interrupts 
 	WRITE_REG_32(AUX_MU_IER_REG, 0);
 
 	// Disable extra controls, transmit and receive for now

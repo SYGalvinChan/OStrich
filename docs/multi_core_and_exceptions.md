@@ -1,5 +1,5 @@
-# Exceptions
-This release sets up the iterrupt controller and system timer in preparation for a scheduler.
+# Multi Core and Exceptions
+This release enables multi core, sets up the iterrupt controller and system timer in preparation for a scheduler.
 ## Exception Levels
 There are four exception levels in AArch64, EL0 - EL3, with higher number indicating higher privilige. 
 When the CPU is in a higher Exception Level, the CPU is able to execute more instructions and access more System Configuration Registors.
@@ -15,7 +15,7 @@ AArch64 specifies four types of exceptions:
 ### Vector Table
 When taking an exception, the CPU will stop its normal line of execution and jump to the appropiate exception handler routine. The handlers are stored in the Vector Table. The Vector Table must be 2048 bytes aligned, with each entry being 128 bytes aligned.
 
-## Interrupt Controller
+## interrupt Controller
 The BCM2711 chip contains 2 interrupt controllers, the Generic Interrupt Controller and the Legacy Interrupt Controller. This project utilizes the Legacy Interrupt Controller. 
 
 ## System Timer

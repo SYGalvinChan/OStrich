@@ -1,5 +1,5 @@
 #include "console.h"
-#include "HAL/interupt_controller.h"
+#include "HAL/interrupt_controller.h"
 #include "HAL/system_timer.h"
 #include "utils.h"
 #include <stdint.h>
@@ -16,7 +16,7 @@ void main(void) {
 		printf("Console initialized!!!!\r\n");
 
 		system_timer_init();
-		interupt_controller_init();
+		interrupt_controller_init();
 		exception_handler_init();
 
 		started = 1;

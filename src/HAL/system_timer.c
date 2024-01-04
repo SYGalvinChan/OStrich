@@ -15,7 +15,7 @@ void system_timer_init() {
 
 void handle_system_timer1_irq() {
     if (cpu_id() == 0) {
-        // Wait a bit before clearing to ensure all cores are interupted
+        // Wait a bit before clearing to ensure all cores are interrupted
         delay(0x500);
         // Clear match status bit
         WRITE_REG_32(CS, 2);
@@ -24,6 +24,6 @@ void handle_system_timer1_irq() {
         clo_register_value += COUNTER_INTERVAL;
         WRITE_REG_32(C1, clo_register_value);  
     }
-    printf("Timer 1 interupted CPU ID:%d\r\n", cpu_id());
+    printf("Timer 1 interrupted CPU ID:%d\r\n", cpu_id());
     delay(0x2000);
 }

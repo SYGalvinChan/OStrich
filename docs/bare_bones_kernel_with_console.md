@@ -52,7 +52,7 @@ The initialization of the mini UART is done in `mini_uart_init()`.The steps are 
 1. Set Pull Up/Pull Down resistor for GPIO Pin 14 and 15 to none
 1. Enable mini UART
 1. Disable extra controls, transmitter and receiver for now
-1. Disable transmit and receive interupts 
+1. Disable transmit and receive interrupts 
 1. Set data size to 8 bits and allow access to baudrate register
 1. Set baudrate to 115200
 1. Enable transmitter and receiver

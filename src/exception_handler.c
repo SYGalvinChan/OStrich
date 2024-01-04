@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "utils.h"
-#include "memory_map/interupt_controller.h"
+#include "memory_map/interrupt_controller.h"
 #include "HAL/system_timer.h"
 #include "exception_handler.h"
 #include "console.h"
@@ -30,7 +30,7 @@ void exception_handler_init() {
 	irq_source_handlers[8] = core_irq_handler;
 	irq_pending2_handlers[24] = lower_VC_peripheral_irq_handler;
 	irq_pending2_handlers[25] = upper_VC_peripheral_irq_handler;
-	// Attach system timer interupt handlers
+	// Attach system timer interrupt handlers
 	irq_pending0_handlers[1] = handle_system_timer1_irq;	
 }
 
