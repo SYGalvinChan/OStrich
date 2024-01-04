@@ -31,7 +31,9 @@ AArch64 specifies four types of exceptions:
 When taking an exception, the CPU will stop its normal line of execution and jump to the appropiate exception handler routine. The handlers are stored in the Vector Table. The Vector Table must be 2048 bytes aligned, with each entry being 128 bytes aligned.
 
 ### Handling IRQ
-The handler must determine the source of the IRQ, then call the appropriate IRQ handler.
+The handler must determine the source of the IRQ, then call the specific IRQ handler. The IRQ handler is implemented in `src/exception_handler.c`.
+
+The `include/exception_handler.h` file defines the possible IRQ sources in the system. This is done to decouple the interrupt controller from the IRQ handling, meaning the `get_irq_source()` function in the interrupt controller just needs to return a defined IRQ source and the specific IRQ handler is called.
 
 ## Interrupt Controller
 The BCM2711 chip contains 2 interrupt controllers, the Generic Interrupt Controller and the Legacy Interrupt Controller. This project utilizes the Legacy Interrupt Controller. 
@@ -44,9 +46,9 @@ Once the interrupts have been masked and routed, their statuses can be read from
 These are "nested" status registers, which means if bit 8 in the SOURCE register is set, you also need to read PENDING2 to see which bits are set there. If bit 24 in the PENDING2 register is set, then you also need to read PENDING0 to see which
 bits there are set.
 
-The `interrupt_controller_init()` function enables the appropriate interrupts, then initializes the mapping of bit position in status registers to irq sources defined in `include/exception_handler.h`.
+The `interrupt_controller_init()` function enables the appropriate interrupts, then initializes the mapping of bit position in status registers to IRQ sources defined in `include/exception_handler.h`.
 
-The `get_irq_source()` function is implemented to determine the source of the irq by following the "nested" structure of the status registers.
+The `get_irq_source()` function is implemented to determine the source of the IRQ by traversing the "nested" structure of the status registers. If a bit is set in a status register, it is mapped to an IRQ source and returned to the IRQ handler for further processing.
 
 ## System Timer
 The BCM2711 chip contains a system timer peripheral at memory addresses defined in `include/memory_map/system_timer.h`, following Table 166 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
