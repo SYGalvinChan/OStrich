@@ -16,7 +16,7 @@ void main(void) {
 		printf("Console initialized!!!!\r\n");
 
 		system_timer_init();
-		interrupt_controller_init();
+		// interrupt_controller_init();
 		exception_handler_init();
 
 		started = 1;

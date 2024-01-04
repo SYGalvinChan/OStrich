@@ -5,4 +5,6 @@
 
 void interrupt_controller_init();
 
+int get_irq_src(int cpu_id);
+
 #endif
