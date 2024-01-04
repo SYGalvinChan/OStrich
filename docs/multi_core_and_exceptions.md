@@ -23,15 +23,30 @@ The only way to change exception levels is by taking an exception or returning f
 AArch64 specifies four types of exceptions:
 
 1. Synchronous Exceptions
-1. Interrupt
-1. Fast Interrupt
+1. IRQ
+1. FIQ
 1. System Error
 
 ### Vector Table
 When taking an exception, the CPU will stop its normal line of execution and jump to the appropiate exception handler routine. The handlers are stored in the Vector Table. The Vector Table must be 2048 bytes aligned, with each entry being 128 bytes aligned.
 
-## interrupt Controller
+### Handling IRQ
+The handler must determine the source of the IRQ, then call the appropriate IRQ handler.
+
+## Interrupt Controller
 The BCM2711 chip contains 2 interrupt controllers, the Generic Interrupt Controller and the Legacy Interrupt Controller. This project utilizes the Legacy Interrupt Controller. 
+The memory addresses are defined in `include/memory_map/interrupt_controller.h`, following Table 104 and Table 117 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
+
+The masking within the "ARMC routing" block is controlled by the SET_EN_0, SET_EN_1, SET_EN_2, CLR_EN_0, CLR_EN_1 and CLR_EN_2 registers. Each of these registers is repeated for each of the eight FIQn/IRQn signals (48 registers in total).
+
+Once the interrupts have been masked and routed, their statuses can be read from the 3 PENDING and 1 SOURCE registers (repeated 8 times for each of the FIQn/IRQn signals, for a total of 32 registers).
+
+These are "nested" status registers, which means if bit 8 in the SOURCE register is set, you also need to read PENDING2 to see which bits are set there. If bit 24 in the PENDING2 register is set, then you also need to read PENDING0 to see which
+bits there are set.
+
+The `interrupt_controller_init()` function enables the appropriate interrupts, then initializes the mapping of bit position in status registers to irq sources defined in `include/exception_handler.h`.
+
+The `get_irq_source()` function is implemented to determine the source of the irq by following the "nested" structure of the status registers.
 
 ## System Timer
 The BCM2711 chip contains a system timer peripheral at memory addresses defined in `include/memory_map/system_timer.h`, following Table 166 in the [datasheet](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf). 
