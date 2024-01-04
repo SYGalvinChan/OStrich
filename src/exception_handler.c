@@ -34,7 +34,7 @@ void exception_handler_init() {
 	irq_pending0_handlers[1] = handle_system_timer1_irq;	
 }
 
-void handle_irq() {
+void handle_irq_el1t() {
 	uint32_t* irq_source_register = irq_source_registers[cpu_id()];
 	uint32_t irq_source = READ_REG_32(irq_source_register);
 	uint32_t mask = 1;

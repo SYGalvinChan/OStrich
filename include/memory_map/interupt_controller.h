@@ -1,7 +1,7 @@
 #ifndef MM_INTERUPT_CONTROLLER_H
 #define MM_INTERUPT_CONTROLLER_H
 
-#define ARM_LOCAL_BASE_ADDRESS 0xFF800000
+#define ARM_LOCAL_BASE_ADDRESS (void*) 0xFF800000
 
 #define ARM_CONTROL         ARM_LOCAL_BASE_ADDRESS + 0x00    // ARM Timer and AXI Error IRQ control
 #define CORE_IRQ_CONTROL    ARM_LOCAL_BASE_ADDRESS + 0x0c    // VideoCore Interrupt Control
@@ -28,7 +28,7 @@
 #define FIQ_SOURCE2         ARM_LOCAL_BASE_ADDRESS + 0x78    // FIQ Source flags for ARM Core 2
 #define FIQ_SOURCE3         ARM_LOCAL_BASE_ADDRESS + 0x7c    // FIQ Source flags for ARM Core 3
 
-#define ARMC_BASE_ADDRESS 0xFE00B000
+#define ARMC_BASE_ADDRESS (void*) 0xFE00B000
 
 #define IRQ0_PENDING0     ARMC_BASE_ADDRESS + 0x200     // ARM Core 0 IRQ Enabled Interrupt Pending bits [31:0]
 #define IRQ0_PENDING1     ARMC_BASE_ADDRESS + 0x204     // ARM Core 0 IRQ Enabled Interrupt pending bits [63:32]

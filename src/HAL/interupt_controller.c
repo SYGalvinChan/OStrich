@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 void interupt_controller_init() {
+    // Enable System Timer 1 interupt for all 4 cores
     WRITE_REG_32(IRQ0_SET_EN_0, 0x02);
     WRITE_REG_32(IRQ1_SET_EN_0, 0x02);
     WRITE_REG_32(IRQ2_SET_EN_0, 0x02);
